@@ -37,11 +37,16 @@ namespace USBFolderSort
         private void loadRemovableDrives()
         {
             emptyDrivesList();
-            var allDrives = DriveInfo.GetDrives().Where(w=>w.DriveType.Equals(DriveType.Removable) && w.IsReady == true);
+            var allDrives = DriveInfo.GetDrives().Where(w => w.DriveType.Equals(DriveType.Removable) && w.IsReady == true);
             foreach (var d in allDrives)
             {
                 lv_all_drives.Items.Add(d.ToString());
             }
+            if (lv_all_drives.Items.Count > 0)
+            {
+                lv_all_drives.SelectedItems.Add(lv_all_drives.Items.GetItemAt(0));
+            }
+
         }
 
         private void emptyDrivesList()
@@ -55,7 +60,58 @@ namespace USBFolderSort
 
         private void btn_sort_Click(object sender, RoutedEventArgs e)
         {
+            btn_sort.IsEnabled = false;
+            sortDrive();
+            btn_sort.IsEnabled = true;
+        }
 
+        private void sortDrive()
+        {
+            try
+            {
+                var usbDrive = lv_all_drives.SelectedValue.ToString();
+                DirectoryInfo dirInfo = new DirectoryInfo(usbDrive);
+
+                if (dirInfo.GetDirectories().Count() > 1)
+                {
+                    var allDirectories = dirInfo.GetDirectories();
+                    var tmpDirectory = Guid.NewGuid();
+                    string newPath = usbDrive + tmpDirectory;
+                    if (!Directory.Exists(newPath))
+                    {
+                        Directory.CreateDirectory(newPath);
+                        foreach (DirectoryInfo d in allDirectories)
+                        {
+                            if (!d.Name.Contains("System Volume Information"))
+                            {
+                                var sourcePath = System.IO.Path.Combine(usbDrive, d.Name);
+                                var destinationPath = System.IO.Path.Combine(newPath, d.Name);
+                                Directory.Move(sourcePath, destinationPath);
+                            }
+                        }
+
+                        foreach (DirectoryInfo d in allDirectories.OrderBy(o => o.FullName))
+                        {
+                            if (!d.Name.Contains("System Volume Information"))
+                            {
+                                var sourcePath = System.IO.Path.Combine(newPath, d.Name);
+                                var destinationPath = System.IO.Path.Combine(usbDrive, d.Name);
+                                Directory.Move(sourcePath, destinationPath);
+
+                                Directory.SetCreationTimeUtc(destinationPath, DateTime.UtcNow);
+                                Directory.SetLastAccessTimeUtc(destinationPath, DateTime.UtcNow);
+                                Directory.SetLastWriteTimeUtc(destinationPath, DateTime.UtcNow);
+                            }                            
+                        }
+                        Directory.Delete(newPath, true);
+                    }
+                }
+                lbl_status.Background = Brushes.Green;
+            }
+            catch (System.IO.IOException ex)
+            {
+                lbl_status.Background = Brushes.Red;
+            }
         }
     }
 }
