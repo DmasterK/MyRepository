@@ -40,7 +40,7 @@ namespace USBFolderSort
             var allDrives = DriveInfo.GetDrives().Where(w => w.DriveType.Equals(DriveType.Removable) && w.IsReady == true);
             foreach (var d in allDrives)
             {
-                lv_all_drives.Items.Add(d.ToString());
+                lv_all_drives.Items.Add(d.Name + d.VolumeLabel);
             }
             if (lv_all_drives.Items.Count > 0)
             {
@@ -70,6 +70,9 @@ namespace USBFolderSort
             try
             {
                 var usbDrive = lv_all_drives.SelectedValue.ToString();
+                usbDrive = usbDrive.Split(':')[0];
+                usbDrive += ":\\";
+
                 DirectoryInfo dirInfo = new DirectoryInfo(usbDrive);
 
                 if (dirInfo.GetDirectories().Count() > 1)
