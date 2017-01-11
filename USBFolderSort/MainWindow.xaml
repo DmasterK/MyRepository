@@ -7,15 +7,15 @@
         mc:Ignorable="d"
         Title="USBFolderSort" Height="190" Width="235">
     <Grid>
-        <ListView x:Name="listView" HorizontalAlignment="Left" Height="92" Margin="10,19,0,0" VerticalAlignment="Top" Width="100">
+        <ListView x:Name="lv_all_drives" HorizontalAlignment="Left" Height="92" Margin="10,19,0,0" VerticalAlignment="Top" Width="100">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="btn_refresh_devices" Content="Refresh" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="btn_sort" Content="Sort" HorizontalAlignment="Left" Margin="130,116,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn_refresh_devices" Content="Refresh" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Width="100" Click="btn_refresh_devices_Click"/>
+        <Button x:Name="btn_sort" Content="Sort" HorizontalAlignment="Left" Margin="130,116,0,0" VerticalAlignment="Top" Width="75" Click="btn_sort_Click"/>
         <Label x:Name="lbl_status" Content="Status" HorizontalAlignment="Left" Margin="130,19,0,0" VerticalAlignment="Top" Height="82" Width="75"/>
 
     </Grid>
