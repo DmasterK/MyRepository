@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:USBFolderSort"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="USBFolderSort" Height="190" Width="235">
     <Grid>
-        <ListView x:Name="listView" HorizontalAlignment="Left" Height="217" Margin="10,19,0,0" VerticalAlignment="Top" Width="100">
+        <ListView x:Name="listView" HorizontalAlignment="Left" Height="92" Margin="10,19,0,0" VerticalAlignment="Top" Width="100">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="btn_refresh_devices" Content="Refresh" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Width="100"/>
+        <Button x:Name="btn_sort" Content="Sort" HorizontalAlignment="Left" Margin="130,116,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label x:Name="lbl_status" Content="Status" HorizontalAlignment="Left" Margin="130,19,0,0" VerticalAlignment="Top" Height="82" Width="75"/>
 
     </Grid>
 </Window>
